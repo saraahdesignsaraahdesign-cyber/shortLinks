@@ -5,23 +5,126 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>链接管理</title>
     <style>
-        body { font-family: sans-serif; line-height: 1.6; padding: 2em; max-width: 800px; margin: 0 auto; }
-        .form-group { margin-bottom: 1em; }
-        label { display: block; margin-bottom: 0.5em; }
-        input[type="text"], input[type="url"], input[type="password"] { width: 100%; padding: 0.5em; box-sizing: border-box; }
-        button { padding: 0.7em 1.5em; cursor: pointer; }
-        #message { margin-top: 1em; padding: 1em; border-radius: 5px; display: none; }
-        .success { background-color: #e6ffed; border: 1px solid #b7ebc9; color: #2d6a4f; }
-        .error { background-color: #ffebee; border: 1px solid #ffcdd2; color: #c62828; }
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --light-gray: #f8f9fa;
+            --dark-gray: #343a40;
+            --border-color: #dee2e6;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            margin: 0;
+            padding: 2em;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: var(--dark-gray);
+            margin-bottom: 1.5em;
+        }
+        .form-group {
+            margin-bottom: 1.5em;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+            font-weight: 600;
+            color: #495057;
+        }
+        input[type="text"], input[type="url"], input[type="password"], input[type="number"] {
+            width: 100%;
+            padding: 0.75em;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+        button {
+            padding: 0.75em 1.5em;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            background-color: var(--primary-color);
+            font-size: 1em;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button#submit-btn {
+            width: 100%;
+            padding: 0.8em;
+            font-weight: 600;
+        }
+        button:disabled {
+            background-color: var(--secondary-color);
+            cursor: not-allowed;
+        }
+        #message {
+            margin-top: 1.5em;
+            padding: 1em;
+            border-radius: 5px;
+            display: none;
+            text-align: center;
+        }
+        .success { background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        small { color: var(--secondary-color); }
     </style>
 </head>
 <body>
-    <h1>短链接管理</h1>
+    <div class="container">
+        <h1>短链接管理</h1>
     <p>在此页面添加或更新您的短链接。所有操作将通过 GitHub API 直接更新 <code>data/links.json</code> 文件。</p>
     
     <div class="form-group">
         <label for="short-code">短代码 (无需输入 / )</label>
-        <input type="text" id="short-code" placeholder="例如: short" required>
+        <div style="display: flex; gap: 10px;">
+            <input type="text" id="short-code" placeholder="例如: short" required style="flex-grow: 1;">
+            <button id="generate-btn" type="button" style="flex-shrink: 0;">随机生成</button>
+        </div>
+    </div>
+    <div class="form-group" id="generator-options" style="display: none; border: 1px solid #ccc; padding: 1em; border-radius: 5px; margin-top: -0.5em; margin-bottom: 1em;">
+        <label>随机生成选项</label>
+        <div>
+            <label for="length" style="display: inline-block; margin-right: 10px;">长度:</label>
+            <input type="number" id="length" value="6" min="4" max="12" style="width: 60px;">
+        </div>
+        <div style="margin-top: 10px;">
+            <input type="checkbox" id="include-uppercase" checked>
+            <label for="include-uppercase">包含大写字母 (A-Z)</label>
+        </div>
+        <div>
+            <input type="checkbox" id="include-lowercase" checked>
+            <label for="include-lowercase">包含小写字母 (a-z)</label>
+        </div>
+        <div>
+            <input type="checkbox" id="include-numbers">
+            <label for="include-numbers">包含数字 (0-9)</label>
+        </div>
     </div>
     <div class="form-group">
         <label for="long-url">目标长链接</label>
@@ -36,6 +139,7 @@
     <button id="submit-btn">添加/更新链接</button>
     
     <div id="message"></div>
+    </div>
 
     <script src="./js/config.js"></script>
     <script src="./js/app.js"></script>

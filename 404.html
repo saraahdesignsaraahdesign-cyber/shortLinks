@@ -3,17 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <title>跳转中...</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 100vh;
+            padding: 2em;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 500px;
+        }
+        p {
+            font-size: 1.1em;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        strong {
+            font-weight: 600;
+            color: #dc3545;
+        }
+    </style>
 </head>
 <body>
-    <p>正在跳转，请稍候...</p>
+    <div class="container">
+        <p>正在跳转，请稍候...</p>
+    </div>
     <script>
         (async function() {
+            const container = document.querySelector('.container');
             // 获取当前路径，例如 your.github.io/short -> /short
             const path = window.location.pathname;
 
             // 如果是根路径或首页，则不进行跳转
             if (path === '/' || path.toLowerCase() === '/index.html') {
-                document.body.innerHTML = '<p>欢迎使用短链接服务。请直接访问您的短链接地址。</p>';
+                container.innerHTML = '<p>欢迎使用短链接服务。请直接访问您的短链接地址。</p>';
                 return;
             }
 
@@ -33,11 +69,11 @@
                     window.location.replace(targetUrl);
                 } else {
                     // 如果未找到，显示错误信息
-                    document.body.innerHTML = `<p>错误：短链接 "<strong>${path}</strong>" 未找到。</p><p><a href="/">返回首页</a></p>`;
+                    container.innerHTML = `<p>错误：短链接 "<strong>${path}</strong>" 未找到。</p><p><a href="/">返回首页</a></p>`;
                 }
             } catch (error) {
                 console.error('跳转失败:', error);
-                document.body.innerHTML = '<p>跳转过程中发生错误，请检查后台数据或联系管理员。</p>';
+                container.innerHTML = '<p>跳转过程中发生错误，请检查后台数据或联系管理员。</p>';
             }
         })();
     </script>

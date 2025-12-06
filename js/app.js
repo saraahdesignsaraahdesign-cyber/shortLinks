@@ -97,3 +97,50 @@ function showMessage(msg, type) {
     messageDiv.className = type; // 'success' or 'error'
     messageDiv.style.display = 'block';
 }
+
+// --- 随机生成器逻辑 ---
+const generateBtn = document.getElementById('generate-btn');
+const generatorOptions = document.getElementById('generator-options');
+const shortCodeInput = document.getElementById('short-code');
+
+generateBtn.addEventListener('click', () => {
+    // 切换选项的显示状态
+    const isDisplayed = generatorOptions.style.display === 'block';
+    generatorOptions.style.display = isDisplayed ? 'none' : 'block';
+
+    if (!isDisplayed) {
+        // 如果是展开，则立即生成一个
+        generateAndSetShortCode();
+    }
+});
+
+// 当任何选项改变时，都重新生成
+document.getElementById('length').addEventListener('input', generateAndSetShortCode);
+document.getElementById('include-uppercase').addEventListener('change', generateAndSetShortCode);
+document.getElementById('include-lowercase').addEventListener('change', generateAndSetShortCode);
+document.getElementById('include-numbers').addEventListener('change', generateAndSetShortCode);
+
+function generateAndSetShortCode() {
+    const length = parseInt(document.getElementById('length').value, 10);
+    const includeUppercase = document.getElementById('include-uppercase').checked;
+    const includeLowercase = document.getElementById('include-lowercase').checked;
+    const includeNumbers = document.getElementById('include-numbers').checked;
+
+    let charset = '';
+    if (includeUppercase) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    if (includeLowercase) charset += 'abcdefghijklmnopqrstuvwxyz';
+    if (includeNumbers) charset += '0123456789';
+
+    if (charset === '' || length <= 0) {
+        shortCodeInput.value = '';
+        return;
+    }
+
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        result += charset[randomIndex];
+    }
+
+    shortCodeInput.value = result;
+}

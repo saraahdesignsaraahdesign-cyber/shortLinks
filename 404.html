@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>跳转中...</title>
+</head>
+<body>
+    <p>正在跳转，请稍候...</p>
+    <script>
+        (async function() {
+            // 获取当前路径，例如 your.github.io/short -> /short
+            const path = window.location.pathname;
+
+            // 如果是根路径或首页，则不进行跳转
+            if (path === '/' || path.toLowerCase() === '/index.html') {
+                document.body.innerHTML = '<p>欢迎使用短链接服务。请直接访问您的短链接地址。</p>';
+                return;
+            }
+
+            try {
+                // 获取链接映射数据
+                const response = await fetch('./data/links.json');
+                if (!response.ok) {
+                    throw new Error('无法加载链接数据。');
+                }
+                const links = await response.json();
+
+                // 查找目标 URL
+                const targetUrl = links[path];
+
+                if (targetUrl) {
+                    // 如果找到，立即跳转
+                    window.location.replace(targetUrl);
+                } else {
+                    // 如果未找到，显示错误信息
+                    document.body.innerHTML = `<p>错误：短链接 "<strong>${path}</strong>" 未找到。</p><p><a href="/">返回首页</a></p>`;
+                }
+            } catch (error) {
+                console.error('跳转失败:', error);
+                document.body.innerHTML = '<p>跳转过程中发生错误，请检查后台数据或联系管理员。</p>';
+            }
+        })();
+    </script>
+</body>
+</html>

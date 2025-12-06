@@ -1,17 +1,17 @@
 document.getElementById('submit-btn').addEventListener('click', async () => {
-    const repo = document.getElementById('repo').value.trim();
+    const repo = GITHUB_REPO; // 从 config.js 读取仓库地址
     let shortCode = document.getElementById('short-code').value.trim();
     const longUrl = document.getElementById('long-url').value.trim();
     const pat = document.getElementById('pat').value.trim();
     const messageDiv = document.getElementById('message');
 
     // --- 输入验证 ---
-    if (!repo || !shortCode || !longUrl || !pat) {
+    if (!shortCode || !longUrl || !pat) {
         showMessage('所有字段均为必填项。', 'error');
         return;
     }
-    if (!/^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+$/.test(repo)) {
-        showMessage('仓库格式不正确，应为 "user/repo"。', 'error');
+    if (repo === "your-username/your-repo-name") {
+        showMessage('请先在 js/config.js 文件中配置您的GitHub仓库地址！', 'error');
         return;
     }
     // 自动为 shortCode 添加前导斜杠

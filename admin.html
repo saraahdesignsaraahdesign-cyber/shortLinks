@@ -20,10 +20,6 @@
     <p>在此页面添加或更新您的短链接。所有操作将通过 GitHub API 直接更新 <code>data/links.json</code> 文件。</p>
     
     <div class="form-group">
-        <label for="repo">GitHub 仓库 (格式: user/repo)</label>
-        <input type="text" id="repo" placeholder="例如: your-username/your-repo-name" required>
-    </div>
-    <div class="form-group">
         <label for="short-code">短代码 (无需输入 / )</label>
         <input type="text" id="short-code" placeholder="例如: short" required>
     </div>
@@ -41,6 +37,7 @@
     
     <div id="message"></div>
 
+    <script src="./js/config.js"></script>
     <script src="./js/app.js"></script>
 </body>
 </html>

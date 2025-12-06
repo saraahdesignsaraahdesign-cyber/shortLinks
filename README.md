@@ -39,7 +39,11 @@
 
 1.  **Star 本项目**: 如果您觉得这个项目对您有帮助，请点击右上角的 "Star" 支持一下！
 2.  **Fork 本仓库**: 点击右上角的 "Fork" 按钮，将此仓库复制到您自己的 GitHub 账户下。
-3.  **开启 GitHub Pages**:
+3.  **配置仓库地址**:
+    - 在您的仓库中，找到并打开 `js/config.js` 文件。
+    - 将 `GITHUB_REPO` 的值修改为您自己的仓库地址，格式为 `"your-username/your-repo-name"`。
+    - 保存并提交文件。
+4.  **开启 GitHub Pages**:
     - 进入您 Fork 后的仓库设置 (Settings)。
     - 点击左侧菜单的 "Pages"。
     - 在 "Build and deployment" 部分，将 Source 设置为 "Deploy from a branch"。
@@ -65,7 +69,6 @@
     - 打开 `https://your-username.github.io/your-repo-name/admin.html`。
 
 3.  **填写表单**:
-    - **GitHub 仓库**: 填入您的仓库地址，格式为 `your-username/your-repo-name`。
     - **短代码**: 填入您想要的短链接路径 (例如 `gh`)，程序会自动为您添加前导的 `/`。
     - **目标长链接**: 填入您想要跳转到的完整 URL (例如 `https://github.com`)。
     - **GitHub PAT**: 粘贴您刚刚生成的令牌。

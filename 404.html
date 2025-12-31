@@ -39,7 +39,7 @@
 </head>
 <body>
     <div class="container">
-        <p>正在跳转，请稍候...</p>
+        <p>Redirecting，Please wait...</p>
     </div>
     <script>
         (async function() {
@@ -57,7 +57,7 @@
                 // 获取链接映射数据
                 const response = await fetch('./data/links.json');
                 if (!response.ok) {
-                    throw new Error('无法加载链接数据。');
+                    throw new Error('Unable to load link data.');
                 }
                 const links = await response.json();
 
@@ -69,11 +69,11 @@
                     window.location.replace(targetUrl);
                 } else {
                     // 如果未找到，显示错误信息
-                    container.innerHTML = `<p>错误：短链接 "<strong>${path}</strong>" 未找到。</p><p><a href="/">返回首页</a></p>`;
+                    container.innerHTML = `<p>Error: Shortened link "<strong>${path}</strong>" not found.</p><p><a href="/">Return to homepage</a></p>`;
                 }
             } catch (error) {
-                console.error('跳转失败:', error);
-                container.innerHTML = '<p>跳转过程中发生错误，请检查后台数据或联系管理员。</p>';
+                console.error('Redirect failed:', error);
+                container.innerHTML = '<p>An error occurred during the redirection.，Please check the backend data or contact the administrator.</p>';
             }
         })();
     </script>

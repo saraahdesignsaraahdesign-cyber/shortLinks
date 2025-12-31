@@ -10,7 +10,7 @@ document.getElementById('submit-btn').addEventListener('click', async () => {
         showMessage('所有字段均为必填项。', 'error');
         return;
     }
-    if (repo === "saraahdesignsaraahdesign-cyber/shortLinks") {
+    if (repo === "your-username/your-repo-name") {
         showMessage('请先在 js/config.js 文件中配置您的GitHub仓库地址！', 'error');
         return;
     }

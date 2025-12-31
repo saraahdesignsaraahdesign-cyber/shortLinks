@@ -49,62 +49,56 @@
     </div>
 
     <script>
-        (async function () {
-            const container = document.querySelector('.container');
+(async function () {
+    const container = document.querySelector('.container');
 
-            // Normalize path
-            let path = window.location.pathname.toLowerCase();
+    // Detect repo base path (GitHub Pages)
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const basePath = pathParts.length > 0 ? '/' + pathParts[0] : '';
 
-            // Remove trailing slash
-            if (path.length > 1 && path.endsWith('/')) {
-                path = path.slice(0, -1);
-            }
+    // Normalize short path
+    let shortPath = '/' + pathParts.slice(1).join('/').toLowerCase();
+    if (shortPath.endsWith('/')) shortPath = shortPath.slice(0, -1);
 
-            // Remove GitHub Pages repo name if present
-            const pathParts = path.split('/').filter(Boolean);
-            if (pathParts.length > 1) {
-                path = '/' + pathParts.slice(1).join('/');
-            }
+    // Homepage
+    if (!shortPath || shortPath === '/') {
+        container.innerHTML =
+            '<p>Welcome to the short link service.<br>Please visit a valid short URL.</p>';
+        return;
+    }
 
-            // Home page handling
-            if (path === '/' || path === '/index.html') {
-                container.innerHTML =
-                    '<p>Welcome to the short link service.<br>Please visit a valid short URL.</p>';
-                return;
-            }
+    try {
+        const response = await fetch(
+            `${window.location.origin}${basePath}/data/links.json`,
+            { cache: 'no-store' }
+        );
 
-            try {
-                // Absolute fetch to avoid path issues
-                const response = await fetch(
-                    `${window.location.origin}/data/links.json`,
-                    { cache: 'no-store' }
-                );
+        if (!response.ok) {
+            throw new Error('links.json not found');
+        }
 
-                if (!response.ok) {
-                    throw new Error('Failed to load link data');
-                }
+        const links = await response.json();
+        const targetUrl = links[shortPath];
 
-                const links = await response.json();
-                const targetUrl = links[path];
+        if (targetUrl && /^https?:\/\//i.test(targetUrl)) {
+            window.location.replace(targetUrl);
+        } else {
+            container.innerHTML = `
+                <p>
+                    Error: Short link
+                    "<strong>${shortPath}</strong>" not found.
+                </p>
+                <p><a href="${basePath}/">Return to homepage</a></p>
+            `;
+        }
 
-                // Validate target URL
-                if (targetUrl && /^https?:\/\//i.test(targetUrl)) {
-                    window.location.replace(targetUrl);
-                } else {
-                    container.innerHTML = `
-                        <p>
-                            Error: Short link
-                            "<strong>${path}</strong>" not found.
-                        </p>
-                        <p><a href="/">Return to homepage</a></p>
-                    `;
-                }
-            } catch (error) {
-                console.error('Redirect error:', error);
-                container.innerHTML =
-                    '<p>An error occurred during redirection.<br>Please check the link data or contact the administrator.</p>';
-            }
-        })();
-    </script>
+    } catch (error) {
+        console.error(error);
+        container.innerHTML =
+            '<p>An error occurred during redirection.<br>Please check the link data or contact the administrator.</p>';
+    }
+})();
+</script>
+
 </body>
 </html>
